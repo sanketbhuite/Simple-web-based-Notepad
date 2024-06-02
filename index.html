@@ -1,0 +1,85 @@
+<html>
+<head>
+<title>Notepad</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+    }
+    textarea {
+        width: 98%;
+        height: 600px;
+        border: 2px dashed green;
+        padding: 10px;
+        margin-bottom: 10px;
+        font-size: 20;
+    }
+    button {
+        padding: 5px 10px;
+        font-size: 14px;
+        color: gray;
+        border: 2px solid green;
+        border-radius: 10%;
+        background-color: white;
+        margin-right: 5px;
+    }
+#finally{
+         border: 0px;
+         height: 500px ;
+         width: 100%;
+         display: block;
+    }
+h3{
+        font-family: monospace;
+        color: blue;}
+</style>
+</head>
+<body>
+<textarea id="np"></textarea>
+<div>
+    <button onclick="save()">Save</button>
+    <button onclick="openFile()">Open</button>
+    <button onclick="runCode()">Run</button>
+</div><br><hr>
+<h3>OUTPUT:</h3>
+<iframe id="finally"></iframe>
+<marquee>
+<sub style="font-size: x-small; color:red;">CREATED BY @SANKET BHUITE</sub>
+</marquee>
+<script>
+    function save() {
+        var txt= document.getElementById('np').value;
+        var f= prompt("Enter file name:", "NewFile.txt");
+        if (f){
+            var b= new Blob([txt], { type: 'text/plain' });
+            var a = document.createElement('a');
+            a.download = f;
+            a.href = window.URL.createObjectURL(b);
+            a.click();
+        }
+    }
+
+function openFile() {
+    var ip= document.createElement('input');
+    ip.type = 'file';
+    ip.onchange = function(event) {
+        var f= event.target.files[0];
+        var r= new FileReader();
+        r.onload = function(e) {
+            document.getElementById('np').value = e.target.result;
+        };
+        r.readAsText(f);
+    };
+    ip.click();
+}
+
+    function runCode() {
+        var c= document.getElementById('np').value;
+        var f= document.getElementById('finally').contentWindow.document;
+        f.open();
+        f.write(c);
+        f.close();
+  
+    }
+</script>
+</body>
+</html>
