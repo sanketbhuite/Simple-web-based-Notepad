@@ -1,85 +1,142 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-<title>Notepad</title>
-<style>
-    body {
-        font-family: Arial, sans-serif;
-    }
-    textarea {
-        width: 98%;
-        height: 600px;
-        border: 2px dashed green;
-        padding: 10px;
-        margin-bottom: 10px;
-        font-size: 20;
-    }
-    button {
-        padding: 5px 10px;
-        font-size: 14px;
-        color: gray;
-        border: 2px solid green;
-        border-radius: 10%;
-        background-color: white;
-        margin-right: 5px;
-    }
-#finally{
-         border: 0px;
-         height: 500px ;
-         width: 100%;
-         display: block;
-    }
-h3{
-        font-family: monospace;
-        color: blue;}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML Notepad</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 1100px;
+            width: 100%;
+            background: #ffffff;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            overflow: hidden;
+            padding: 20px;
+        }
+        h1 {
+            font-size: 24px;
+            text-align: center;
+            color: #0056b3;
+            margin-bottom: 20px;
+        }
+        textarea {
+            width: -webkit-fill-available ;
+            height: 450px;
+            border: 1px solid #ddd;
+            padding: 15px;
+            border-radius: 4px;
+            font-size: 16px;
+            font-family: 'Courier New', Courier, monospace;
+            resize: vertical;
+            margin-bottom: 20px;
+        }
+        .buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+        button {
+            flex: 1;
+            margin: 0 5px;
+            padding: 10px;
+            font-size: 16px;
+            color: white;
+            background-color: #0056b3;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #004494;
+        }
+        #finally {
+            border: 1px solid #ddd;
+            width: 100%;
+            height: 600px;
+            border-radius: 4px;
+        }
+        footer {
+            text-align: center;
+            color: black;
+            margin-top: 20px;
+        }
+        footer #creater {
+            margin-top: -15px;
+        }
+        footer #creater a{
+            color: blue;
+            text-decoration: none;
+        }
+    </style>
 </head>
 <body>
-<textarea id="np"></textarea>
-<div>
-    <button onclick="save()">Save</button>
-    <button onclick="openFile()">Open</button>
-    <button onclick="runCode()">Run</button>
-</div><br><hr>
-<h3>OUTPUT:</h3>
-<iframe id="finally"></iframe>
-<marquee>
-<sub style="font-size: x-small; color:gray;">CREATED BY ©SANKET BHUITE</sub>
-</marquee>
+
+<div class="container">
+    <h1>Interactive HTML Notepad</h1>
+    <textarea id="np" placeholder="Write your HTML code here..."></textarea>
+    <div class="buttons">
+        <button onclick="save()">Save</button>
+        <button onclick="openFile()">Open</button>
+        <button onclick="runCode()">Run</button>
+    </div>
+    <h2>Output:</h2>
+    <iframe id="finally"></iframe>
+</div>
+
+<footer>
+    <p>Created by ©Sanket Bhuite | 2024</p>
+    <p id="creater">want to know more about Creater? <a href="https://sanketbhuite.github.io/Sanket-Bhuite-Portfolio/">Click Here</a> 
+</footer>
+
 <script>
     function save() {
-        var txt= document.getElementById('np').value;
-        var f= prompt("Enter file name:", "NewFile.txt");
-        if (f){
-            var b= new Blob([txt], { type: 'text/plain' });
+        var txt = document.getElementById('np').value;
+        var filename = prompt("Enter file name:", "NewFile.html");
+        if (filename) {
+            var blob = new Blob([txt], { type: 'text/plain' });
             var a = document.createElement('a');
-            a.download = f;
-            a.href = window.URL.createObjectURL(b);
+            a.download = filename;
+            a.href = window.URL.createObjectURL(blob);
             a.click();
         }
     }
 
-function openFile() {
-    var ip= document.createElement('input');
-    ip.type = 'file';
-    ip.onchange = function(event) {
-        var f= event.target.files[0];
-        var r= new FileReader();
-        r.onload = function(e) {
-            document.getElementById('np').value = e.target.result;
+    function openFile() {
+        var input = document.createElement('input');
+        input.type = 'file';
+        input.onchange = function(event) {
+            var file = event.target.files[0];
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                document.getElementById('np').value = e.target.result;
+            };
+            reader.readAsText(file);
         };
-        r.readAsText(f);
-    };
-    ip.click();
-}
+        input.click();
+    }
 
     function runCode() {
-        var c= document.getElementById('np').value;
-        var f= document.getElementById('finally').contentWindow.document;
-        f.open();
-        f.write(c);
-        f.close();
-  
+        var code = document.getElementById('np').value;
+        var frame = document.getElementById('finally').contentWindow.document;
+        frame.open();
+        frame.write(code);
+        frame.close();
     }
 </script>
+
 </body>
 </html>
